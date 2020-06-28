@@ -147,11 +147,13 @@ class SamsungTVWS:
         )
 
         response = self._process_api_response(self.connection.recv())
+        _LOGGING.debug("Response: %s", json.dumps(response))
         if response.get('data') and response.get('data').get('token'):
             token = response.get('data').get('token')
             _LOGGING.debug('Got token %s', token)
             self._set_token(token)
 
+        _LOGGING.debug("Event: %s", response['event'])
         if response['event'] != 'ms.channel.connect':
             self.close()
             raise exceptions.ConnectionFailure(response)
